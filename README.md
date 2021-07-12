@@ -13,8 +13,7 @@ GTK+ 3.0 library headers and Make are required to build this project. Glade is n
 Debian or Ubuntu based linux distro:
 
 ```
-$ sudo apt install libgtk-3-dev
-$ sudo apt install glade
+$ sudo apt install libgtk-3-dev glade
 ```
 
 The project can be configured in config.mk to set the project's version, name etc. These are then made available to the program as macros.
@@ -25,7 +24,7 @@ The following macros are available to the C source files:
     NAME      //The project's name
     TARGET    //Name without spaces/ executable name
     AUTHOR    //Your name
-    COPYRIGHT //A copyright message e.g. "Copyright (c) 2021"
+    COPYRIGHT //A copyright message e.g. "Copyright © 2021" and don't use (C) as the parenthesis will confuse the shell in make.
 
 
 ___
@@ -78,8 +77,8 @@ type the name of our new function from main.c, hello_world.
 
 * Now from inside the root directory of this project, run:
 ```
-	$ make
-	$ ./build/bin/template_app
+    $ make
+    $ ./build/bin/template_app
 ```
 "Hello world!" will print in the terminal every time the window is clicked.
 
