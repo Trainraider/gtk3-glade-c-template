@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Template App
-Exec=template_app
-Comment=GTK+ template Application
-Icon=template_app
-Terminal=false
-Categories=Utility;ComputerScience;GNOME;GTK;

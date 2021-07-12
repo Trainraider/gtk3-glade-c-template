@@ -1,6 +1,7 @@
 source/ui_xml.h
-.vscode/*.log
+.vscode/*
 build/*
 debug/*
 *.glade~
 *.glade#
+*.backup

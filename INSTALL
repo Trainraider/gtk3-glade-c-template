@@ -1,8 +1,8 @@
 To install, simply enter this directory and run:
 
-    sudo make install
+    $ sudo make install
 
 NOTE:
-Building and installation requires GCC and the GTK+3 library.
+Building and installation requires GCC and the GTK+ 3.0 library.
 This project has only been tested on Linux. It may work on
 other Unix-like operating systems or WSLv2.

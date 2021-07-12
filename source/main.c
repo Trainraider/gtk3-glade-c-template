@@ -2,6 +2,9 @@
 #include "ui_xml.h"
 #include <gtk/gtk.h>
 
+/* The macros VERSION, NAME, TARGET, AUTHOR and COPYRIGHT are available for this program to reference
+information about itself. These macros are defined in config.mk*/
+
 int main(int argc, char* argv[])
 {
         GtkBuilder* builder;
