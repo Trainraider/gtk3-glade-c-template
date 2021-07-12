@@ -58,11 +58,6 @@ ___
 ### Hello World Tutorial:
 
 Edit source/main.c.
-Add the following code to the top:
-```
-#include <stdio.h>	
-```
-
 At the bottom of the file, add the following lines:
 
 ```
@@ -72,13 +67,14 @@ void hello_world()
 }
 ```
 
-* Now open Glade.
+* Now open window_main.glade with Glade.
 * Click the "Control" button.
 * Click GtkButton, then click the blank window in the editor.
 
 * on the "Signals" tab.
 In the row that says "clicked", and the column labled "Handler",
 type the name of our new function from main.c, hello_world.
+* save window_main.glade
 
 * Now from inside the root directory of this project, run:
 ```
