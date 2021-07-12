@@ -2,11 +2,17 @@
 #include "ui_xml.h"
 #include <gtk/gtk.h>
 
+void version();
+
 /* The macros VERSION, NAME, TARGET, AUTHOR and COPYRIGHT are available for this program to reference
 information about itself. These macros are defined in config.mk*/
 
 int main(int argc, char* argv[])
 {
+        if (argc >= 2) {
+                if (0 == strcmp(argv[1], "--version")) version();
+        }
+
         GtkBuilder* builder;
         GtkWidget*  window;
 
@@ -27,4 +33,12 @@ int main(int argc, char* argv[])
 void on_window_main_destroy()
 {
         gtk_main_quit();
+}
+
+/*Display version information and exit */
+void version(){
+        printf(NAME " " VERSION "\n\n");
+        printf(COPYRIGHT "\n\n");
+        printf(AUTHOR "\n");
+        exit(EXIT_SUCCESS);
 }
