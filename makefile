@@ -7,71 +7,51 @@ include config.mk
 RM = -yes | rm -f
 CP = yes | cp -f
 
-ROOTCHECK = @echo;\
+ROOTCHECK = \
+	@echo;\
 	if [[ $EUID -ne 0 ]]; then\
 		echo "error: you cannot perform this operation unless you are root.";\
 		exit 1;\
 	fi
 #________________________________________________________________________________
 
-BIN = $(BLD)/bin/$(TARGET)
+all: CFLAGS  += $(RELEASE_CFLAGS)
+all: LDFLAGS += $(RELEASE_LDFLAGS)
+all: options $(BIN) $(DESKTOP) | mkdirs
 
-DBIN = $(DBG)/bin/$(TARGET)
-
-OBJ = $(BLD)/main.o
-
-OBJD = $(DBG)/main.o
-
-GLADE = $(SRC)/window_main.glade
-
-GLADEH = $(SRC)/ui_xml.h
-
-DESKTOP = $(BLD)/$(TARGET).desktop
-
-all: options $(BIN) $(DESKTOP)
+debug: CPPFLAGS += $(DEBUG_CPPFLAGS)
+debug: CFLAGS   += $(RELEASE_CFLAGS)
+debug: LDFLAGS  += $(DEBUG_LDFLAGS)
+debug: options $(BIN) | mkdirs
 
 options:
 	@echo Build options:
 	@echo ""
-	@echo "CFLAGS  = $(_CFLAGS) $(RELEASE_CFLAGS)"
+	@echo "CFLAGS  = $(CFLAGS)"
 	@echo ""
-	@echo "LDFLAGS = $(_LDFLAGS)"
+	@echo "LDFLAGS = $(LDFLAGS)"
 	@echo ""
 	@echo "CC      = $(CC)"
 	@echo ""
 
-$(BIN): $(OBJ)
-	$(CC) -o $@ $(OBJ) $(_LDFLAGS)
+$(BIN): $(OBJ) | mkdirs
+	$(CC) -o $@ $(OBJ) $(LDFLAGS)
 
-$(OBJ) : $(GLADEH) $(SRC)/main.c
-	-mkdir -p $(BLD)/bin
-	$(CC) -c $(_CFLAGS) $(RELEASE_CFLAGS) $(SRC)/main.c -o $@
+#General rule for compiling object files
+#make a specific rule if you depend on a header you might change
+$(BLD)/%.o : $(SRC)/%.c | mkdirs
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-$(GLADEH): $(GLADE)
+#Specific rules
+$(BLD)/main.o : $(SRC)/main.c $(SRC)/version.h $(GLADEH) | mkdirs
+$(BLD)/version.o : $(SRC)/version.c $(SRC)/version.h | mkdirs
+
+$(GLADEH): $(GLADE) | mkdirs
 	echo 'static char *GLADE_UI =' > $@;\
-	sed 's/\\/\\\\/g;s/"/\\"/g;s/^.*$$/    "&\\n"/' $(GLADE) >> $@;\
+	sed 's/\\/\\\\/g;s/"/\\"/g;s/^.*$$/    "&\\n"/' $< >> $@;\
 	echo '    ;' >> $@
 
-debug: doptions $(DBIN)
-
-doptions:
-	@echo Build options:
-	@echo ""
-	@echo "CFLAGS  = $(_CFLAGS) $(DEBUG_CFLAGS)"
-	@echo ""
-	@echo "LDFLAGS = $(_LDFLAGS)"
-	@echo ""
-	@echo "CC      = $(CC)"
-	@echo ""
-
-$(DBIN): $(OBJD)
-	$(CC) -o $@ $(OBJD) $(D_LDFLAGS);
-
-$(OBJD): $(GLADEH)
-	-mkdir -p $(DBG)/bin
-	$(CC) -c $(_CFLAGS) $(DEBUG_CFLAGS) $(SRC)/main.c -o $@
-
-$(DESKTOP):
+$(DESKTOP): | mkdirs
 	@echo "[Desktop Entry]"                         > $@
 	@echo "Version=$(VERSION)"                     >> $@
 	@echo "Type=Application"                       >> $@
@@ -82,6 +62,10 @@ $(DESKTOP):
 	@echo "Terminal=false"                         >> $@
 	@echo "Categories=$(CATEGORIES)"               >> $@
 
+mkdirs :
+	-mkdir -p $(BLD)/bin
+	-mkdir -p $(DBG)/bin
+
 install : all
 	$(ROOTCHECK)
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
@@ -90,7 +74,7 @@ install : all
 	mkdir -p $(DESTDIR)$(PREFIX)/share/applications
 	$(CP) $(BLD)/$(TARGET).desktop $(DESTDIR)$(PREFIX)/share/applications/$(TARGET).desktop
 	mkdir -p $(DESTDIR)$(PREFIX)/share/icons/hicolor/scalable/apps
-	$(CP) $(SRC)/icon.svg $(DESTDIR)$(PREFIX)/share/icons/hicolor/scalable/apps/$(TARGET).svg
+	$(CP) $(DATA)/icon.svg $(DESTDIR)$(PREFIX)/share/icons/hicolor/scalable/apps/$(TARGET).svg
 	gtk-update-icon-cache -f -t $(DESTDIR)$(PREFIX)/share/icons/hicolor
 	update-desktop-database $(DESTDIR)$(PREFIX)/share/applications
 
@@ -103,9 +87,9 @@ uninstall :
 	update-desktop-database $(DESTDIR)$(PREFIX)/share/applications
 
 clean :
-	$(RM) $(GLADEH) $(SRC)/*.glade~ $(SRC)/*.glade# $(BLD)/* $(DBG)/* $(BLD)/bin/* $(DBG)/bin/*
+	$(RM) $(GLADEH) $(SRC)/*.glade~ $(SRC)/*.glade# $(BLD)/* $(BLD)/bin/*
 
 format :
 	clang-format -style="{BasedOnStyle: webkit, IndentWidth: 8,AlignConsecutiveDeclarations: true, AlignConsecutiveAssignments: true, ReflowComments: true, SortIncludes: true}" -i $(SRC)/*.{c,h}
 
-.PHONY: all options debug doptions install uninstall clean format
+.PHONY: all options debug install uninstall clean format mkdirs
