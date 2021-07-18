@@ -1,30 +1,38 @@
-SHELL = /bin/sh
+SHELL ?= /bin/sh
 
 #app info
-VERSION    = 0.0.1
-TARGET     = template_app
-NAME       = Template App
-COPYRIGHT  = Copyright © 2021
-AUTHOR     = [Your name here]
-COMMENT    = GTK+ 3.0 template Application
-CATEGORIES = Utility;ComputerScience;GNOME;GTK;
+VERSION    ?= 0.0.1
+TARGET     ?= template_app
+NAME       ?= Template App
+#APP_ID can start with a website or email in reverse url format
+APP_ID     ?= com.email.name.$(TARGET)
+#APP_PREFIX is APP_ID converted to a path.
+APP_PREFIX ?= $(shell echo $(APP_ID) | sed 's:\.:/:g;s:^:/:g')
+COPYRIGHT  ?= Copyright (C) 2021
+AUTHOR     ?= [Your name here]
+COMMENT    ?= GTK+ 3.0 template Application
+CATEGORIES ?= Utility;ComputerScience;GNOME;GTK;
 
 # Customize below to fit your system
 
 # Install paths
 PREFIX ?= /usr
 
+#Project directory
+PD = $(shell pwd)
+
 #Build/Source paths
-SRC     ?= source
-BLD     ?= build
+SRC     ?= $(PD)/source
+BLD     ?= $(PD)/build
 DATA    ?= $(SRC)/data
 
 #Files
-BIN     ?= $(BLD)/bin/$(TARGET)
-OBJ     ?= $(BLD)/main.o $(BLD)/version.o
-GLADE   ?= $(DATA)/window_main.glade
-GLADEH  ?= $(BLD)/ui_xml.h
-DESKTOP ?= $(BLD)/$(TARGET).desktop
+BIN       ?= $(BLD)/bin/$(TARGET)
+OBJ       ?= $(BLD)/main.o $(BLD)/version.o $(BLD)/data.o
+GLADE     ?= $(DATA)/window_main.glade
+GLADEH    ?= $(BLD)/ui_xml.h
+RESOURCES ?= $(DATA)/icon.svg $(DATA)/window_main.glade
+DESKTOP   ?= $(BLD)/$(TARGET).desktop
 
 #Dependencies
 PKG_CONFIG ?= pkg-config
@@ -45,5 +53,5 @@ DEBUG_LDFLAGS   = -fsanitize=address -fsanitize=leak -fsanitize=undefined
 
 #Required flags
 CPPFLAGS += -DVERSION=\"$(VERSION)\" -DNAME=\""$(NAME)"\" -DAPP_ID=\"$(APP_ID)\" -DAPP_PREFIX=\"$(APP_PREFIX)\" -DAUTHOR=\""$(AUTHOR)"\" -DCOPYRIGHT="\"$(COPYRIGHT)\"" -DTARGET=\"$(TARGET)\"
-CFLAGS   += $(INCS) -I./$(BLD)
+CFLAGS   += $(INCS) -I$(BLD)
 LDFLAGS  += $(LIBS) -rdynamic

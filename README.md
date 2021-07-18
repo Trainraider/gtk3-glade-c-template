@@ -22,9 +22,14 @@ The project can be configured in config.mk to set the project's version, name et
 The following macros are available to the C source files:
 
     VERSION   //The project's version number
+	TARGET    //Name without spaces/ executable name
     NAME      //The project's name
-    TARGET    //Name without spaces/ executable name
     AUTHOR    //Your name
+	APP_ID    //Your email/website and app name in reverse url format
+	          //  e.g. com.gmail.johndoe.myapp
+	APP_PREFIX//APP_ID with forward slashes instead of periods. Used for
+	          //  getting resources
+			  //  e.g. /com/gmail/johndoe/myapp
     COPYRIGHT //A copyright message e.g. "Copyright (c) 2021"
 
 

@@ -45,11 +45,23 @@ $(BLD)/%.o : $(SRC)/%.c | mkdirs
 #Specific rules
 $(BLD)/main.o : $(SRC)/main.c $(SRC)/version.h $(GLADEH) | mkdirs
 $(BLD)/version.o : $(SRC)/version.c $(SRC)/version.h | mkdirs
+$(BLD)/data.o : $(BLD)/data.c $(BLD)/data.h | mkdirs
 
 $(GLADEH): $(GLADE) | mkdirs
 	echo 'static char *GLADE_UI =' > $@;\
 	sed 's/\\/\\\\/g;s/"/\\"/g;s/^.*$$/    "&\\n"/' $< >> $@;\
 	echo '    ;' >> $@
+
+$(BLD)/data.c : $(BLD)/data.gresource.xml $(RESOURCES) | mkdirs
+	cd $(DATA);\
+	glib-compile-resources --generate-source $< --target=$@;\
+
+$(BLD)/data.h : $(BLD)/data.gresource.xml $(RESOURCES) | mkdirs
+	cd $(DATA);\
+	glib-compile-resources --generate-header $< --target=$@;\
+
+$(BLD)/data.gresource.xml : $(DATA)/data.gresource.xml.pre | mkdirs
+	sed 's:__PREFIX__:$(APP_ID):' $< > $@
 
 $(DESKTOP): | mkdirs
 	@echo "[Desktop Entry]"                         > $@
