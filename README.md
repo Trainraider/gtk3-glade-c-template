@@ -1,6 +1,6 @@
 ## GTK+ 3 Glade C Template
 
-The project is meant to be an easy yet minimal starting point for any GTK+ 3 project. Initial setup is just setting your project name and other info in config.mk. Resources are integrated into the executable using GResource.
+The project is meant to be an easy yet minimal starting point for any GTK+ 3 project. Initial setup is just setting your project name and other info in config.mk. Resources are integrated into the executable using GResource. More complete documentation [here.](https://github.com/Trainraider/gtk3-glade-c-template/wiki)
 
 ___
 ### Getting Started:
