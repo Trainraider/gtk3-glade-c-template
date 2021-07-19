@@ -43,7 +43,7 @@ $(BLD)/%.o : $(SRC)/%.c | mkdirs
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 #Specific rules
-$(BLD)/main.o : $(SRC)/main.c $(SRC)/version.h $(GLADEH) | mkdirs
+$(BLD)/main.o : $(SRC)/main.c $(SRC)/version.h $(BLD)/data.h $(GLADEH) | mkdirs
 $(BLD)/version.o : $(SRC)/version.c $(SRC)/version.h | mkdirs
 $(BLD)/data.o : $(BLD)/data.c $(BLD)/data.h | mkdirs
 
@@ -61,7 +61,7 @@ $(BLD)/data.h : $(BLD)/data.gresource.xml $(RESOURCES) | mkdirs
 	glib-compile-resources --generate-header $< --target=$@;\
 
 $(BLD)/data.gresource.xml : $(DATA)/data.gresource.xml.pre | mkdirs
-	sed 's:__PREFIX__:$(APP_ID):' $< > $@
+	sed 's:__PREFIX__:$(APP_PREFIX):' $< > $@
 
 $(DESKTOP): | mkdirs
 	@echo "[Desktop Entry]"                         > $@

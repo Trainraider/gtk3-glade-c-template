@@ -1,1 +1,10 @@
-Impliment getting files through gresource
+*Remove old gresource alternative
+
+*add build targets:
+    tar.gz
+    flatpak
+    appimage
+    snap
+    PKGBUILD
+    deb
+    rpm
