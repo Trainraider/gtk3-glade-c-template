@@ -78,8 +78,8 @@ type the name of our new function from main.c, hello_world.
 
 * Now from inside the root directory of this project, run:
 ```
-	$ make
-	$ ./build/bin/template_app
+    $ make
+    $ ./build/bin/template_app
 ```
 "Hello world!" will print in the terminal every time the window is clicked.
 
