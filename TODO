@@ -1,5 +1,3 @@
-*Remove old gresource alternative
-
 *add build targets:
     tar.gz
     flatpak

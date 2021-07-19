@@ -43,14 +43,9 @@ $(BLD)/%.o : $(SRC)/%.c | mkdirs
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 #Specific rules
-$(BLD)/main.o : $(SRC)/main.c $(SRC)/version.h $(BLD)/data.h $(GLADEH) | mkdirs
+$(BLD)/main.o : $(SRC)/main.c $(SRC)/version.h $(BLD)/data.h | mkdirs
 $(BLD)/version.o : $(SRC)/version.c $(SRC)/version.h | mkdirs
 $(BLD)/data.o : $(BLD)/data.c $(BLD)/data.h | mkdirs
-
-$(GLADEH): $(GLADE) | mkdirs
-	echo 'static char *GLADE_UI =' > $@;\
-	sed 's/\\/\\\\/g;s/"/\\"/g;s/^.*$$/    "&\\n"/' $< >> $@;\
-	echo '    ;' >> $@
 
 $(BLD)/data.c : $(BLD)/data.gresource.xml $(RESOURCES) | mkdirs
 	cd $(DATA);\
@@ -99,7 +94,7 @@ uninstall :
 	update-desktop-database $(DESTDIR)$(PREFIX)/share/applications
 
 clean :
-	$(RM) $(GLADEH) $(SRC)/*.glade~ $(SRC)/*.glade# $(BLD)/* $(BLD)/bin/*
+	$(RM) $(DATA)/*.glade~ $(DATA)/*.glade# $(BLD)/**
 
 format :
 	clang-format -style="{BasedOnStyle: webkit, IndentWidth: 8,AlignConsecutiveDeclarations: true, AlignConsecutiveAssignments: true, ReflowComments: true, SortIncludes: true}" -i $(SRC)/*.{c,h}

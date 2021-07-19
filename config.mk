@@ -30,7 +30,6 @@ DATA    ?= $(SRC)/data
 BIN       ?= $(BLD)/bin/$(TARGET)
 OBJ       ?= $(BLD)/main.o $(BLD)/version.o $(BLD)/data.o
 GLADE     ?= $(DATA)/window_main.glade
-GLADEH    ?= $(BLD)/ui_xml.h
 RESOURCES ?= $(DATA)/icon.svg $(DATA)/window_main.glade
 DESKTOP   ?= $(BLD)/$(TARGET).desktop
 
