@@ -10,6 +10,7 @@ APP_ID     ?= com.email.name.$(TARGET)
 APP_PREFIX ?= $(shell echo $(APP_ID) | sed 's:\.:/:g;s:^:/:g')
 COPYRIGHT  ?= Copyright (C) 2021
 AUTHOR     ?= [Your name here]
+EMAIL      ?= name@email.com
 COMMENT    ?= GTK+ 3.0 template Application
 CATEGORIES ?= Utility;ComputerScience;GNOME;GTK;
 
@@ -43,7 +44,7 @@ LIBS = `$(PKG_CONFIG) --libs gtk+-3.0` \
 #      `$(PKG_CONFIG) --libs next_library`
 
 #Optional flags
-CFLAGS         ?= -march=native -pipe
+CFLAGS         ?= -pipe
 RELEASE_CFLAGS  = -O2 -g -flto
 RELEASE_LDFLAGS = -flto
 DEBUG_CPPFLAGS  = -DDEBUG
@@ -51,6 +52,14 @@ DEBUG_CFLAGS    = -O0 -ggdb -Wpedantic -Wall -Wextra -fsanitize=address -fsaniti
 DEBUG_LDFLAGS   = -fsanitize=address -fsanitize=leak -fsanitize=undefined
 
 #Required flags
-CPPFLAGS += -DVERSION=\"$(VERSION)\" -DNAME=\""$(NAME)"\" -DAPP_ID=\"$(APP_ID)\" -DAPP_PREFIX=\"$(APP_PREFIX)\" -DAUTHOR=\""$(AUTHOR)"\" -DCOPYRIGHT="\"$(COPYRIGHT)\"" -DTARGET=\"$(TARGET)\"
+CPPFLAGS += -DVERSION="\"$(VERSION)\""      \
+	    -DNAME="\"$(NAME)\""            \
+            -DAPP_ID="\"$(APP_ID)\""        \
+            -DAPP_PREFIX="\"$(APP_PREFIX)\""\
+	    -DAUTHOR="\"$(AUTHOR)\""        \
+	    -DEMAIL="\"$(EMAIL)\""          \
+	    -DCOPYRIGHT="\"$(COPYRIGHT)\""  \
+	    -DTARGET="\"$(TARGET)\""
+
 CFLAGS   += $(INCS) -I$(BLD)
 LDFLAGS  += $(LIBS) -rdynamic

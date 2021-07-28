@@ -9,5 +9,6 @@ void version()
 #endif
         printf(COPYRIGHT "\n\n");
         printf(AUTHOR "\n");
+        printf(EMAIL "\n");
         exit(EXIT_SUCCESS);
 }
