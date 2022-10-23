@@ -86,3 +86,5 @@ type the name of our new function from main.c, hello_world.
 The following more in-depth tutorial was referenced by this project
 and is recommended:
 https://prognotes.net/gtk-glade-c-programming/
+That link died, here's an archived version:
+https://web.archive.org/web/20210628084247/https://prognotes.net/gtk-glade-c-programming/
